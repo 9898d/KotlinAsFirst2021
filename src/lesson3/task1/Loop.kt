@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -72,7 +73,10 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    return if (n < 10) 1
+    else digitNumber(n / 10) + 1
+}
 
 /**
  * Простая (2 балла)
@@ -80,21 +84,37 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    return when (n) {
+        1 -> 1
+        2 -> 1
+        else -> fib(n - 2) + fib(n - 1)
+    }
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    for (mindel in 2..n) {
+        if (n % mindel == 0) return mindel
+    }
+    return 0
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    for (mindel in 2..n) {
+        if (n % mindel == 0) return n / mindel
+    }
+    return 0
+}
 
 /**
  * Простая (2 балла)
@@ -112,7 +132,17 @@ fun maxDivisor(n: Int): Int = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var count = 0
+    var y = x
+    while (y != 1) {
+        count += 1
+        if (y % 2 == 0) {
+            y /= 2
+        } else y = 3 * y + 1
+    }
+    return count
+}
 
 /**
  * Средняя (3 балла)
@@ -138,7 +168,19 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var kolvocifr = digitNumber(n)
+    var x = n
+    var ostatok: Int
+    var otvet = 0
+    while (kolvocifr > 0) {
+        ostatok = x % 10
+        otvet = (otvet + ostatok * 10.0.pow(kolvocifr - 1)).toInt()
+        kolvocifr -= 1
+        x /= 10
+    }
+    return otvet
+}
 
 /**
  * Средняя (3 балла)
@@ -149,7 +191,10 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    val rev = revert(n)
+    return n == rev
+}
 
 /**
  * Средняя (3 балла)
@@ -159,7 +204,19 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var kolvocifr = digitNumber(n)
+    var a = 1
+    if (n < 10) return false
+    else {
+        while (kolvocifr > 1) {
+            kolvocifr -= 1
+            a *= 10
+            if ((10 * n / a) % 10 != (n / a) % 10) return true
+        }
+        return false
+    }
+}
 
 /**
  * Средняя (4 балла)
