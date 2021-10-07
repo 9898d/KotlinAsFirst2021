@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import java.lang.Math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -74,7 +75,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    return if (n < 10) 1
+    return if (kotlin.math.abs(n) < 10) 1
     else digitNumber(n / 10) + 1
 }
 
@@ -91,11 +92,10 @@ fun fib(n: Int): Int {
 //        else -> fib(n - 2) + fib(n - 1)
 //    }
     var nomer = n
-    var xpred: Int
     var x = 1
     var xsled = 1
     while (nomer > 2) {
-        xpred = x
+        val xpred = x
         x = xsled
         xsled = xpred + x
         nomer -= 1
@@ -147,7 +147,7 @@ fun collatzSteps(x: Int): Int {
     var count = 0
     var y = x
     while (y != 1) {
-        count += 1
+        count++
         if (y % 2 == 0) {
             y /= 2
         } else y = 3 * y + 1
@@ -180,14 +180,14 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var kolvocifr = digitNumber(n)
+    var digitNumber = digitNumber(n)
     var x = n
     var ostatok: Int
     var otvet = 0
-    while (kolvocifr > 0) {
+    while (digitNumber > 0) {
         ostatok = x % 10
-        otvet = (otvet + ostatok * 10.0.pow(kolvocifr - 1)).toInt()
-        kolvocifr -= 1
+        otvet = (otvet + ostatok * 10.0.pow(digitNumber - 1)).toInt()
+        digitNumber--
         x /= 10
     }
     return otvet
@@ -202,10 +202,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    val rev = revert(n)
-    return n == rev
-}
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя (3 балла)

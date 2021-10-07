@@ -111,13 +111,20 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if (((kingX != rookX1) && (kingX != rookX2)) && ((kingY != rookY1) && (kingY != rookY2)))
-        return 0
-    if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2)))
-        return 3
-    if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) && (kingY != rookY2)))
-        return 1
-    else return 2
+//    if (((kingX != rookX1) && (kingX != rookX2)) && ((kingY != rookY1) && (kingY != rookY2)))
+//        return 0
+//    if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2)))
+//        return 3
+//    if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) && (kingY != rookY2)))
+//        return 1
+//    else return 2
+    return if ((kingX != rookX1) && (kingY != rookY1)) {
+        if ((kingX != rookX2) && (kingY != rookY2)) 0
+        else 2
+    } else {
+        if ((kingX != rookX2) && (kingY != rookY2)) 1
+        else 3
+    }
 }
 
 /**
@@ -135,10 +142,17 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
-    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 3
-    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) != abs(kingY - bishopY))) return 1
-    if ((kingX != rookX) && (kingY != rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 2
-    else return 0
+//    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 3
+//    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) != abs(kingY - bishopY))) return 1
+//    if ((kingX != rookX) && (kingY != rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 2
+//    else return 0
+    return if ((kingX != rookX) && (kingY != rookY)) {
+        if (abs(kingX - bishopX) == abs(kingY - bishopY)) 2
+        else 0
+    } else {
+        if (abs(kingX - bishopX) == abs(kingY - bishopY)) 3
+        else 1
+    }
 }
 
 /**
@@ -150,13 +164,12 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if ((a > b + c) || (b > c + a) || (c > a + b))
-        return -1
-    if ((a * a < b * b + c * c) && (b * b < a * a + c * c) && (c * c < a * a + b * b))
-        return 0
-    if ((a * a == b * b + c * c) || (b * b == a * a + c * c) || (c * c == a * a + b * b))
-        return 1
-    else return 2
+    return when {
+        a > b + c || b > c + a || c > a + b -> -1
+        (a * a < b * b + c * c) && (b * b < a * a + c * c) && (c * c < a * a + b * b) -> 0
+        a * a == b * b + c * c || b * b == a * a + c * c || c * c == a * a + b * b -> 1
+        else -> 2
+    }
 }
 
 /**
