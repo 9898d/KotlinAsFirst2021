@@ -2,7 +2,6 @@
 
 package lesson3.task1
 
-import java.lang.Math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -109,8 +108,8 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (mindel in 2..n) {
-        if (n % mindel == 0) return mindel
+    for (minDivisor in 2..n) {
+        if (n % minDivisor == 0) return minDivisor
     }
     return 0
 }
@@ -121,8 +120,8 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (mindel in 2..n) {
-        if (n % mindel == 0) return n / mindel
+    for (minDivisor in 2..n) {
+        if (n % minDivisor == 0) return n / minDivisor
     }
     return 0
 }
@@ -182,15 +181,15 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
 fun revert(n: Int): Int {
     var digitNumber = digitNumber(n)
     var x = n
-    var ostatok: Int
-    var otvet = 0
+    var remainder: Int
+    var answer = 0
     while (digitNumber > 0) {
-        ostatok = x % 10
-        otvet = (otvet + ostatok * 10.0.pow(digitNumber - 1)).toInt()
+        remainder = x % 10
+        answer = (answer + remainder * 10.0.pow(digitNumber - 1)).toInt()
         digitNumber--
         x /= 10
     }
-    return otvet
+    return answer
 }
 
 /**
@@ -202,8 +201,10 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = n == revert(n)
-
+fun isPalindrome(n: Int): Boolean {
+    val nl = n.toLong()
+    return nl == revert2(n)
+}
 /**
  * Средняя (3 балла)
  *
@@ -213,12 +214,12 @@ fun isPalindrome(n: Int): Boolean = n == revert(n)
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var kolvocifr = digitNumber(n)
+    var digitNumber = digitNumber(n)
     var a = 1
     if (n < 10) return false
     else {
-        while (kolvocifr > 1) {
-            kolvocifr -= 1
+        while (digitNumber > 1) {
+            digitNumber -= 1
             a *= 10
             if ((10 * n / a) % 10 != (n / a) % 10) return true
         }
@@ -269,3 +270,18 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int = TODO()
+
+
+fun revert2(n: Int): Long {
+    var digitNumber = digitNumber(n)
+    var x = n
+    var remainder: Int
+    var answer: Long = 0
+    while (digitNumber > 0) {
+        remainder = x % 10
+        answer = (answer + remainder * 10.0.pow(digitNumber - 1)).toLong()
+        digitNumber--
+        x /= 10
+    }
+    return answer
+}
