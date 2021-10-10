@@ -2,6 +2,8 @@
 
 package lesson3.task1
 
+import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -74,7 +76,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    return if (kotlin.math.abs(n) < 10) 1
+    return if (abs(n) < 10) 1
     else digitNumber(n / 10) + 1
 }
 
@@ -236,7 +238,20 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    val angle = x % (PI * 2)
+    var result = 0.0
+    var n = angle
+    var a = 3
+    var sign = 1
+    while (eps < abs(n)) {
+        result += n
+        n = (angle.pow(a) / factorial(a)) * (-1.0).pow(sign)
+        a += 2
+        sign += 1
+    }
+    return result
+}
 
 /**
  * Средняя (4 балла)
@@ -247,7 +262,20 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    val angle = x % (PI * 2)
+    var result = 0.0
+    var n = 1.0
+    var a = 2
+    var sign = 1
+    while (eps < abs(n)) {
+        result += n
+        n = (angle.pow(a) / factorial(a)) * (-1.0).pow(sign)
+        a += 2
+        sign += 1
+    }
+    return result
+}
 
 /**
  * Сложная (4 балла)
