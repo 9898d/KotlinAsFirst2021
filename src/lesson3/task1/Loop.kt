@@ -87,19 +87,12 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-//    return when (n) {
-//        1 -> 1
-//        2 -> 1
-//        else -> fib(n - 2) + fib(n - 1)
-//    }
-    var nomer = n
     var x = 1
     var xsled = 1
-    while (nomer > 2) {
+    for (nomer in n downTo 3) {
         val xpred = x
         x = xsled
         xsled = xpred + x
-        nomer -= 1
     }
     return xsled
 }
@@ -151,7 +144,9 @@ fun collatzSteps(x: Int): Int {
         count++
         if (y % 2 == 0) {
             y /= 2
-        } else y = 3 * y + 1
+        } else {
+            y = 3 * y + 1
+        }
     }
     return count
 }
@@ -180,19 +175,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int {
-    var digitNumber = digitNumber(n)
-    var x = n
-    var remainder: Int
-    var answer = 0
-    while (digitNumber > 0) {
-        remainder = x % 10
-        answer = (answer + remainder * 10.0.pow(digitNumber - 1)).toInt()
-        digitNumber--
-        x /= 10
-    }
-    return answer
-}
+fun revert(n: Int): Int = revert2(n).toInt()
 
 /**
  * Средняя (3 балла)
@@ -303,10 +286,9 @@ fun fibSequenceDigit(n: Int): Int = TODO()
 fun revert2(n: Int): Long {
     var digitNumber = digitNumber(n)
     var x = n
-    var remainder: Int
     var answer: Long = 0
     while (digitNumber > 0) {
-        remainder = x % 10
+        val remainder = x % 10
         answer = (answer + remainder * 10.0.pow(digitNumber - 1)).toLong()
         digitNumber--
         x /= 10
