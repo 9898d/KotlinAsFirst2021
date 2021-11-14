@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import lesson4.task1.roman
+import java.util.*
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -149,7 +152,20 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val stri = str.lowercase()
+    val words = stri.split(" ")
+    var n = 1
+    if (words.isEmpty() || words.size == 1)
+        return -1
+    else {
+        for (word in words) {
+            if (word == words[n]) return stri.indexOf("$word $word")
+            n += 1
+        }
+        return -1
+    }
+}
 
 /**
  * Сложная (6 баллов)
@@ -175,7 +191,13 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    for (n in 1..3000) {
+        if (roman(n) == roman)
+            return n
+    }
+    return -1
+}
 
 /**
  * Очень сложная (7 баллов)

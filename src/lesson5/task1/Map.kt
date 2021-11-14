@@ -96,7 +96,23 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val three = mutableListOf<String>()
+    val four = mutableListOf<String>()
+    val five = mutableListOf<String>()
+    for ((name, grade) in grades) {
+        when (grade) {
+            3 -> three.add(name)
+            4 -> four.add(name)
+            5 -> five.add(name)
+        }
+    }
+    val res = mutableMapOf<Int, List<String>>(3 to three, 4 to four, 5 to five)
+    if (three == mutableListOf<String>()) res -= 3
+    if (four == mutableListOf<String>()) res -= 4
+    if (five == mutableListOf<String>()) res -= 5
+    return res
+}
 
 /**
  * Простая (2 балла)
@@ -108,7 +124,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = (b + a == b)
 
 /**
  * Простая (2 балла)
@@ -125,7 +141,9 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+    for ((el1, el2) in b) {
+        a.remove(el1, el2)
+    }
 }
 
 /**
@@ -135,8 +153,19 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
-
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val res = mutableListOf<String>()
+    for (name in a) {
+        for (name2 in b) {
+            if (name == name2) {
+                res.add(name)
+                a.toMutableList().remove(name)
+                b.toMutableList().remove(name)
+            }
+        }
+    }
+    return res
+}
 /**
  * Средняя (3 балла)
  *
@@ -154,7 +183,17 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val res = mutableMapOf<String, String>()
+    for ((nameA, numberA) in mapA) {
+        for ((nameB, numberB) in mapB) {
+            if ((nameA == nameB) && (numberA != numberB)) {
+                res.put(nameA, "$numberA, $numberB")
+            }
+        }
+    }
+    return (mapA + mapB) + res
+}
 
 /**
  * Средняя (4 балла)
@@ -194,7 +233,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    for (el in word) {
+        if (el in chars) continue
+        else return false
+    }
+    return true
+}
 
 /**
  * Средняя (4 балла)
@@ -208,8 +253,21 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
-
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val chars = mutableSetOf<String>() + list
+    val res = mutableMapOf<String, Int>()
+    var count = 0
+    for (el1 in chars) {
+        for (el2 in list) {
+            if (el1 == el2)
+                count += 1
+        }
+        if (count > 1)
+            res[el1] = count
+        count = 0
+    }
+    return res
+}
 /**
  * Средняя (3 балла)
  *
@@ -222,7 +280,22 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    var n = 0
+    if ((words.isEmpty()) || words.size == 1)
+        return false
+    else {
+        while (n != words.size - 1) {
+            for (el in words.subList(n + 1, words.size)) {
+                if ((words[n].toSet() == el.toSet()) && (words[n].length == el.length))
+                    return true
+                else continue
+            }
+            n += 1
+        }
+        return false
+    }
+}
 
 /**
  * Сложная (5 баллов)
