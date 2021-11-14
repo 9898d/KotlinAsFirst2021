@@ -161,7 +161,8 @@ fun firstDuplicateIndex(str: String): Int {
     else {
         for (word in words) {
             if (word == words[n]) return stri.indexOf("$word $word")
-            n += 1
+            if (n < words.size - 1)
+                n += 1
         }
         return -1
     }
@@ -192,7 +193,7 @@ fun mostExpensive(description: String): String = TODO()
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    for (n in 1..3000) {
+    for (n in 1..4000) {
         if (roman(n) == roman)
             return n
     }
