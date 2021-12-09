@@ -97,17 +97,11 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val res = mutableMapOf<Int, List<String>>()
-    val setOfGrades = grades.values.toMutableSet()
-    var list = mutableListOf<String>()
-    for (grade in setOfGrades) {
-        for ((name, gr) in grades) {
-            if (grade == gr) {
-                list += name
-            }
-        }
-        res[grade] = list
-        list = mutableListOf<String>()
+    val res = mutableMapOf<Int, MutableList<String>>()
+    for ((name, grade) in grades) {
+        val gr = res[grade]
+        if (gr == null)
+            res[grade] = mutableListOf(name) else gr.add(name)
     }
     return res
 }
@@ -219,6 +213,11 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     return res
 }
 
+fun main() {
+    val a = "Хлеб 39.9; Молоко 62; Курица 184.0; Конфеты 89.9"
+    println(a.toList())
+}
+
 /**
  * Средняя (4 балла)
  *
@@ -260,17 +259,17 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = chars.toSet().conta
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    val chars = list.toMutableSet()
     val res = mutableMapOf<String, Int>()
-    var count = 0
-    for (el1 in chars) {
-        for (el2 in list) {
-            if (el1 == el2)
-                count += 1
-        }
-        if (count > 1)
-            res[el1] = count
-        count = 0
+    for (el in list) {
+        val count = res[el]
+        if (count == null) {
+            res[el] = 1
+        } else res[el] = count + 1
+    }
+    val res2 = res.toList()
+    for ((el, count) in res2) {
+        if (count == 1)
+            res.remove(el)
     }
     return res
 }

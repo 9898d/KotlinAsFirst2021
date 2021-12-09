@@ -139,7 +139,7 @@ fun bestHighJump(jumps: String): Int = TODO()
  * использующее целые положительные числа, плюсы и минусы, разделённые пробелами.
  * Наличие двух знаков подряд "13 + + 10" или двух чисел подряд "1 2" не допускается.
  * Вернуть значение выражения (6 для примера).
- * Про нарушении формата входной строки бросить исключение IllegalArgumentException
+ * При нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int = TODO()
 
@@ -160,7 +160,7 @@ fun firstDuplicateIndex(str: String): Int {
         return -1
     else {
         for (word in words) {
-            if (word == words[n]) return stri.indexOf("$word $word")
+            if (word == words[n]) return stri.substringBefore("$word $word").length
             if (n < words.size - 1)
                 n += 1
         }
@@ -193,11 +193,20 @@ fun mostExpensive(description: String): String = TODO()
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    for (n in 1..4000) {
-        if (roman(n) == roman)
-            return n
+    if (roman.isEmpty()) return -1
+    var n = 1
+    var res = 0
+    val rom = listOf('I', 'V', 'X', 'L', 'C', 'D', 'M')
+    val number = listOf(1, 5, 10, 50, 100, 500, 1000)
+    for (el in roman) {
+        if (el !in rom) return -1
+        if ((roman.length == n) || (rom.indexOf(el) >= rom.indexOf(roman[n])))
+            res += number[rom.indexOf(el)]
+        else
+            res -= number[rom.indexOf(el)]
+        n += 1
     }
-    return -1
+    return res
 }
 
 /**
