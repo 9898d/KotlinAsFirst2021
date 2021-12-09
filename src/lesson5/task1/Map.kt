@@ -213,11 +213,6 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     return res
 }
 
-fun main() {
-    val a = "Хлеб 39.9; Молоко 62; Курица 184.0; Конфеты 89.9"
-    println(a.toList())
-}
-
 /**
  * Средняя (4 балла)
  *
@@ -244,7 +239,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = chars.toSet().containsAll(word.toSet())
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    chars.toString().lowercase().toSet().containsAll(word.toSet())
 
 /**
  * Средняя (4 балла)

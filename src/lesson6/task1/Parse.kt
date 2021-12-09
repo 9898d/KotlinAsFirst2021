@@ -161,8 +161,8 @@ fun firstDuplicateIndex(str: String): Int {
     else {
         for (word in words) {
             if (word == words[n]) return stri.substringBefore("$word $word").length
-            if (n < words.size - 1)
-                n += 1
+            if (n < words.size - 1) n += 1
+            else break
         }
         return -1
     }
