@@ -2,7 +2,10 @@
 
 package lesson7.task1
 
+import lesson3.task1.digitNumber
 import java.io.File
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -63,7 +66,18 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    TODO()
+    val res = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        if (line == "") {
+            res.newLine()
+        } else {
+            if (line[0] != '_') {
+                res.write(line)
+                res.newLine()
+            }
+        }
+    }
+    res.close()
 }
 
 /**
@@ -75,7 +89,20 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    val text = File(inputName).readLines().joinToString("").lowercase()
+    for (string in substrings) {
+        var n = 0
+        var count = 0
+        while (n + string.length - 1 < text.length) {
+            if (string.lowercase() == text.substring(n, n + string.length)) count++
+            n++
+        }
+        res[string] = count
+    }
+    return res
+}
 
 
 /**
