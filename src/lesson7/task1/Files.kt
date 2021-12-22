@@ -2,10 +2,7 @@
 
 package lesson7.task1
 
-import lesson3.task1.digitNumber
 import java.io.File
-import kotlin.math.pow
-import kotlin.math.roundToInt
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -67,17 +64,18 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun deleteMarked(inputName: String, outputName: String) {
     val res = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) {
-        if (line == "") {
-            res.newLine()
-        } else {
-            if (line[0] != '_') {
-                res.write(line)
-                res.newLine()
+    res.use {
+        for (line in File(inputName).readLines()) {
+            if (line == "") {
+                it.newLine()
+            } else {
+                if (line[0] != '_') {
+                    it.write(line)
+                    it.newLine()
+                }
             }
         }
     }
-    res.close()
 }
 
 /**
@@ -91,7 +89,7 @@ fun deleteMarked(inputName: String, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
-    val text = File(inputName).readText().lowercase().split("\n")
+    val text = File(inputName).readLines().map { it.lowercase() }
     for (string in substrings) {
         var count = 0
         for (line in text) {
@@ -265,18 +263,15 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val res = File(outputName).bufferedWriter()
     val list = mutableListOf<String>()
-    for (word in File(inputName).readLines().joinToString("\n").split("\n")) {
+    val c = File(inputName).readText().split("\\n", "\r\n")
+    for (word in c) {
         if (word.length == word.lowercase().toSet().size) list.add(word)
     }
     var max = 0
     for (word in list) {
         if (word.length > max) max = word.length
     }
-    for (word in list) {
-        if (word.length != max) list.remove(word)
-    }
-    val a = list.joinToString(", ")
-    res.write(a)
+    res.write(list.filter { it.length == max }.joinToString(", "))
     res.close()
 }
 
