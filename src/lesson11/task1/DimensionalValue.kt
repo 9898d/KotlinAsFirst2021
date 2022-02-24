@@ -129,6 +129,13 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
             }
         }
     }
+
+    override fun hashCode(): Int {
+        var result = _value.hashCode()
+        result = 31 * result + _dimension.hashCode()
+        result = 31 * result + _dimensionPrefix.hashCode()
+        return result
+    }
 }
 
 /**
