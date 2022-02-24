@@ -115,6 +115,7 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
     override fun equals(other: Any?): Boolean =
         ((other is DimensionalValue) && (other.value == value) && (other.dimension == dimension))
 
+
     /**
      * Сравнение на больше/меньше. Если базовая размерность разная, бросить IllegalArgumentException
      */
