@@ -39,7 +39,6 @@ fun main() {
     val stop2 = Stop("b", Time(1, 1))
     val listOfStops = mutableListOf<Stop>(stop1, stop2).sortedBy { it.time }
     println(listOfStops)
-    val stop3 = Stop("c", Time(3, 3))
     val set1 = setOf(1, 2, 3)
     val set2 = setOf(1, 3, 2)
     println(set1 == set2)
@@ -111,13 +110,11 @@ class TrainTimeTable(val baseStationName: String) {
     fun addStop(train: String, stop: Stop): Boolean {
         val stops: MutableList<Stop> = mutableListOf()
         var dep = Time(1, 1)
-        var destination = Stop("", Time(0, 1))
         for ((key, value) in map) {
             if (key.name == train) {
-                stops += (key.stops)
+                stops += key.stops
                 stops.sortedBy { it.time }
                 dep = value
-                destination = stops.last()
             }
         }
         val listOfNamesOfStops = mutableListOf<String>()
@@ -184,7 +181,35 @@ class TrainTimeTable(val baseStationName: String) {
      * @param stopName название промежуточной остановки
      * @return true, если удаление успешно
      */
-    fun removeStop(train: String, stopName: String): Boolean = TODO()
+    fun removeStop(train: String, stopName: String): Boolean {
+        val stops = mutableListOf<Stop>()
+        var dep = Time(0, 0)
+        for ((key, value) in map) {
+            if (key.name == train) {
+                stops += key.stops
+                stops.sortedBy { it.time }
+                dep = value
+            }
+        }
+        val listOfNamesOfStops = mutableListOf<String>()
+        for (st in stops) {
+            listOfNamesOfStops.add(st.name)
+        }
+        return if ((!listOfNamesOfStops.contains(stopName)) || (listOfNamesOfStops.first() == stopName) || (listOfNamesOfStops.last() == stopName)) {
+            false
+        } else {
+            var index = 0
+            for (st in stops) {
+                if (st.name == stopName) {
+                    index = stops.indexOf(st)
+                }
+            }
+            stops.removeAt(index)
+            removeTrain(train)
+            map[Train(train, stops)] = dep
+            true
+        }
+    }
 
     /**
      * Вернуть список всех поездов, упорядоченный по времени отправления с baseStationName

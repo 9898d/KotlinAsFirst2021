@@ -45,14 +45,17 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
     private val _value = value
     private val _dimension = if (dimension.length > 1) dimension[1].toString() else dimension
     private val _dimensionPrefix = if (dimension.length > 1) dimension[0].toString() else ""
+    private val dimensionPrefix =
+        when (_dimensionPrefix) {
+            DimensionPrefix.KILO.abbreviation -> DimensionPrefix.KILO
+            DimensionPrefix.MILLI.abbreviation -> DimensionPrefix.MILLI
+            else -> 0
+        }
 
     val value: Double
         get() {
-            return when (_dimensionPrefix) {
-                "K" -> _value * 1000
-                "m" -> _value / 1000
-                else -> _value
-            }
+            return if (dimensionPrefix is DimensionPrefix) _value * dimensionPrefix.multiplier
+            else _value
         }
 
     /**
@@ -60,7 +63,7 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      */
     val dimension: Dimension
         get() {
-            return if (_dimension == "g") Dimension.GRAM
+            return if (_dimension == Dimension.GRAM.abbreviation) Dimension.GRAM
             else Dimension.METER
         }
 
