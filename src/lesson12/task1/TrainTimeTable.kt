@@ -111,7 +111,7 @@ class TrainTimeTable(val baseStationName: String) {
     fun addStop(train: String, stop: Stop): Boolean {
         val stops: MutableList<Stop> = mutableListOf()
         var dep = Time(1, 1)
-        var destination = Stop("", Time(0, 0))
+        var destination = Stop("", Time(0, 1))
         for ((key, value) in map) {
             if (key.name == train) {
                 stops += (key.stops)
