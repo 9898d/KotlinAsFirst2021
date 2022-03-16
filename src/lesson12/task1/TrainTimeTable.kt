@@ -113,7 +113,7 @@ class TrainTimeTable(val baseStationName: String) {
         for ((key, value) in map) {
             if (key.name == train) {
                 stops += key.stops
-                stops.sortedBy { it.time }
+                stops.sortBy { it.time }
                 dep = value
             }
         }
@@ -187,7 +187,7 @@ class TrainTimeTable(val baseStationName: String) {
         for ((key, value) in map) {
             if (key.name == train) {
                 stops += key.stops
-                stops.sortedBy { it.time }
+                stops.sortBy { it.time }
                 dep = value
             }
         }
@@ -231,11 +231,34 @@ class TrainTimeTable(val baseStationName: String) {
      * Список должен быть упорядочен по времени прибытия на станцию destinationName
      */
     fun trains(currentTime: Time, destinationName: String): List<Train> {
-        val currentList = mutableListOf<Train>()
+        val currentList = mutableListOf<Pair<Train, Time>>()
         for ((key, value) in map) {
-            if ((value >= currentTime) && (key.stops.map { it.name }.contains(destinationName))) currentList.add(key)
+            if ((value >= currentTime) && (key.stops.map { it.name }.contains(destinationName))) {
+                val a = key.stops.find { it.name == destinationName }
+                currentList.add(Pair(key, a!!.time))
+            }
         }
-        return currentList
+        currentList.sortBy { it.second }
+        currentList.toMap()
+        return currentList.map { it.first }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as TrainTimeTable
+
+        if (baseStationName != other.baseStationName) return false
+        if (map != other.map) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = baseStationName.hashCode()
+        result = 31 * result + map.hashCode()
+        return result
     }
 
     /**
@@ -243,7 +266,8 @@ class TrainTimeTable(val baseStationName: String) {
      * Расписания считаются одинаковыми, если содержат одинаковый набор поездов,
      * и поезда с тем же именем останавливаются на одинаковых станциях в одинаковое время.
      */
-    override fun equals(other: Any?): Boolean = TODO()
+
+
 }
 
 /**
